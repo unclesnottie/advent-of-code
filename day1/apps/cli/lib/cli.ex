@@ -3,16 +3,14 @@ defmodule Cli do
   Documentation for Cli.
   """
 
-  @doc """
-  Hello world.
+  import Captcha
 
-  ## Examples
-
-      iex> Cli.hello
-      :world
-
-  """
-  def hello do
-    :world
+  @doc false
+  def main(args) do
+    args
+    |> hd()
+    |> Captcha.calc()
+    |> IO.puts()
   end
+
 end

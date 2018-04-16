@@ -9,7 +9,7 @@ defmodule Cli do
   def main(args) do
     args
     |> hd()
-    |> Captcha.calc()
+    |> Captcha.calc2()
     |> IO.puts()
   end
 

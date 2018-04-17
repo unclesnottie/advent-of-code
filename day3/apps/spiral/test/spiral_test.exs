@@ -4,19 +4,19 @@ defmodule SpiralTest do
 
   describe "Spiral.calc/1" do
     test "example 1" do
-      assert Spiral.calc(1) == 0
+      assert 0 == Spiral.calc(1)
     end
 
     test "example 2" do
-      assert Spiral.calc(12) == 3
+      assert 3 == Spiral.calc(12)
     end
 
     test "example 3" do
-      assert Spiral.calc(23) == 2
+      assert 2 == Spiral.calc(23)
     end
 
     test "example 4" do
-      assert Spiral.calc(1024) == 31
+      assert 31 == Spiral.calc(1024)
     end
   end
 end

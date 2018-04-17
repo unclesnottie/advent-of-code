@@ -27,7 +27,7 @@ defmodule Cli.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:spiral, in_umbrella: true},
+      {:spiral, in_umbrella: true}
     ]
   end
 end

@@ -2,7 +2,9 @@ defmodule MazeTest do
   use ExUnit.Case
   doctest Maze
 
-  test "greets the world" do
-    assert Maze.hello() == :world
+  describe "Maze.get_steps/1" do
+    test "example 1" do
+      assert 5 == Maze.get_steps("0 3 0 1 -3")
+    end
   end
 end

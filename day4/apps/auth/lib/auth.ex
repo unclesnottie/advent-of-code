@@ -3,16 +3,29 @@ defmodule Auth do
   Documentation for Auth.
   """
 
-  @doc """
-  Hello world.
+  @doc false
+  def passphrase_valid?(pass) when is_binary(pass) do
+    words =
+      pass
+      |> String.split()
 
-  ## Examples
+    num_words =
+      words
+      |> Enum.count()
 
-      iex> Auth.hello
-      :world
+    num_unique =
+      words
+      |> Enum.uniq()
+      |> Enum.count()
 
-  """
-  def hello do
-    :world
+    num_words == num_unique
+  end
+
+  @doc false
+  def count_valid(passes) when is_binary(passes) do
+    passes
+    |> String.split("\n", trim: true)
+    |> Enum.filter(&passphrase_valid?/1)
+    |> Enum.count()
   end
 end

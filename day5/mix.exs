@@ -15,6 +15,6 @@ defmodule Day5.MixProject do
   #
   # Run "mix help deps" for examples and options.
   defp deps do
-    []
+    [{:mix_test_watch, "~> 0.6", only: :dev, runtime: false}]
   end
 end

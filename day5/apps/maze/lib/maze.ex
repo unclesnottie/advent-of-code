@@ -23,7 +23,7 @@ defmodule Maze do
   end
 
   @doc false
-  defp move(moves, index, steps) when steps < 0 or steps >= length(moves) do
+  defp move(moves, index, steps) when index < 0 or index >= length(moves) do
     steps
   end
   defp move(moves, index, steps) do

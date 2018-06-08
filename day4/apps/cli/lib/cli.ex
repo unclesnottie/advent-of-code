@@ -8,8 +8,7 @@ defmodule Cli do
     args
     |> hd()
     |> File.read!()
-    |> Auth.count_valid()
+    |> Auth.count_valid2()
     |> IO.puts()
   end
-
 end

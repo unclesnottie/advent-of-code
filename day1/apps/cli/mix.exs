@@ -11,8 +11,8 @@ defmodule Cli.Mixfile do
       lockfile: "../../mix.lock",
       elixir: "~> 1.5",
       escript: [main_module: Cli],
-      build_embedded: Mix.env == :prod,
-      start_permanent: Mix.env == :prod,
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
   end
@@ -27,7 +27,7 @@ defmodule Cli.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:captcha, in_umbrella: true},
+      {:captcha, in_umbrella: true}
     ]
   end
 end

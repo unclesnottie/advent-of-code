@@ -10,9 +10,12 @@ defmodule Captcha do
     shifted_numbers = tail ++ [head]
 
     Stream.zip(numbers, shifted_numbers)
-    |> Stream.filter(fn ({x, y}) -> x == y end)
-    |> Stream.map(fn ({x, _}) -> {y, _} = Integer.parse(x); y end)
-    |> Enum.reduce(0, fn (x, acc) -> x + acc end)
+    |> Stream.filter(fn {x, y} -> x == y end)
+    |> Stream.map(fn {x, _} ->
+      {y, _} = Integer.parse(x)
+      y
+    end)
+    |> Enum.reduce(0, fn x, acc -> x + acc end)
   end
 
   @doc false
@@ -23,9 +26,11 @@ defmodule Captcha do
     shifted_numbers = back ++ front
 
     Stream.zip(numbers, shifted_numbers)
-    |> Stream.filter(fn ({x, y}) -> x == y end)
-    |> Stream.map(fn ({x, _}) -> {y, _} = Integer.parse(x); y end)
-    |> Enum.reduce(0, fn (x, acc) -> x + acc end)
+    |> Stream.filter(fn {x, y} -> x == y end)
+    |> Stream.map(fn {x, _} ->
+      {y, _} = Integer.parse(x)
+      y
+    end)
+    |> Enum.reduce(0, fn x, acc -> x + acc end)
   end
-
 end

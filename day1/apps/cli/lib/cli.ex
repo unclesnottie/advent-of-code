@@ -12,5 +12,4 @@ defmodule Cli do
     |> Captcha.calc2()
     |> IO.puts()
   end
-
 end

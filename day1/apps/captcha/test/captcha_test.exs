@@ -3,7 +3,6 @@ defmodule CaptchaTest do
   doctest Captcha
 
   describe "Captcha.calc/1" do
-
     test "example 1" do
       assert 3 == Captcha.calc("1122")
     end
@@ -22,7 +21,6 @@ defmodule CaptchaTest do
   end
 
   describe "Captcha.calc2/1" do
-
     test "example 1" do
       assert 6 == Captcha.calc2("1212")
     end
@@ -42,6 +40,5 @@ defmodule CaptchaTest do
     test "example 5" do
       assert 4 == Captcha.calc2("12131415")
     end
-
   end
 end

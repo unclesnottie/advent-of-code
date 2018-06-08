@@ -26,6 +26,7 @@ defmodule Maze do
   defp move(moves, index, steps) when index < 0 or index >= length(moves) do
     steps
   end
+
   defp move(moves, index, steps) do
     current = Enum.at(moves, index)
     move(List.replace_at(moves, index, current + 1), index + current, steps + 1)

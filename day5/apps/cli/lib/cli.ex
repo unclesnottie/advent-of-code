@@ -11,5 +11,4 @@ defmodule Cli do
     |> Maze.get_steps()
     |> IO.puts()
   end
-
 end

@@ -11,4 +11,14 @@ defmodule MazeTest do
       assert 4 == Maze.get_steps("0 3 0 1 -5")
     end
   end
+
+  describe "Maze.get_steps2/1" do
+    test "example 1" do
+      assert 10 == Maze.get_steps2("0 3 0 1 -3")
+    end
+
+    test "ends with index < 0" do
+      assert 4 == Maze.get_steps2("0 3 0 1 -5")
+    end
+  end
 end

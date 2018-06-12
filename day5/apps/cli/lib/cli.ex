@@ -8,7 +8,7 @@ defmodule Cli do
     args
     |> hd()
     |> File.read!()
-    |> Maze.get_steps()
+    |> Maze.get_steps2()
     |> IO.puts()
   end
 end

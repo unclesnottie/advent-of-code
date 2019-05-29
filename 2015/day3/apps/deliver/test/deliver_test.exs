@@ -2,6 +2,12 @@ defmodule DeliverTest do
   use ExUnit.Case
   doctest Deliver
 
+  describe "Deliver.count_houses_robo/1" do
+    test "example 1" do
+      assert 3 == Deliver.count_houses_robo("^v")
+    end
+  end
+
   describe "Deliver.count_houses/1" do
     test "example 1" do
       assert 2 == Deliver.count_houses(">")

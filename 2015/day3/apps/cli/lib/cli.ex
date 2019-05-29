@@ -7,7 +7,7 @@ defmodule Cli do
     args
     |> hd()
     |> File.read!()
-    |> Deliver.count_houses()
+    |> Deliver.count_houses_robo()
     |> IO.puts
   end
 end

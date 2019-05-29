@@ -3,6 +3,26 @@ defmodule Deliver do
   Documentation for Deliver.
   """
 
+  def count_houses_robo(str) do
+    robo_moves = str
+                 |> build_moves()
+                 |> Enum.take_every(2)
+
+    santa_moves = "0" <> str
+                  |> build_moves()
+                  |> Enum.take_every(2)
+
+    robo_houses = robo_moves
+                  |> build_houses()
+
+    santa_houses = santa_moves
+                   |> build_houses()
+
+    robo_houses ++ santa_houses
+    |> Enum.uniq()
+    |> length()
+  end
+
   def count_houses(str) do
     str
     |> build_moves()

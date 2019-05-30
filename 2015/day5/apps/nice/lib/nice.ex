@@ -3,6 +3,19 @@ defmodule Nice do
   Documentation for Nice.
   """
 
+  def count_nice2(str) do
+    str
+    |> String.split()
+    |> Enum.count(&is_nice2?/1)
+  end
+
+  def is_nice2?(str) do
+    repeated_pair? = str =~ ~r/(\w\w).*\1/
+    letter_sandwich? = str =~ ~r/(\w)\w\1/
+
+    repeated_pair? && letter_sandwich?
+  end
+
   def count_nice(str) do
     str
     |> String.split()

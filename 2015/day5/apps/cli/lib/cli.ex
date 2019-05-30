@@ -7,7 +7,7 @@ defmodule Cli do
     args
     |> hd()
     |> File.read!()
-    |> Nice.count_nice()
+    |> Nice.count_nice2()
     |> IO.puts()
   end
 

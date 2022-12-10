@@ -5,17 +5,20 @@ defmodule Cli do
 
   @doc false
   def main(args) do
-    filename =
-      args
-      |> hd()
+    case args do
+      [] ->
+        IO.puts("Please provide a file name")
+        System.halt(1)
 
-    case CalorieCounter.process(filename) do
-      {:ok, output} ->
-        IO.puts(output)
+      [filename | _] ->
+        case CalorieCounter.process(filename) do
+          {:ok, output} ->
+            IO.puts(output)
 
-      {:error, msg} ->
-        IO.puts(msg)
-        System.stop(1)
+          {:error, msg} ->
+            IO.puts(msg)
+            System.stop(1)
+        end
     end
   end
 end

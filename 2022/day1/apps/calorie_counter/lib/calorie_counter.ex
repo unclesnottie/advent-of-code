@@ -7,6 +7,50 @@ defmodule CalorieCounter do
   The main entry point into CalorieCounter.
   """
   def process(filename) when is_binary(filename) do
+    star_one_impl(filename)
+  end
+
+  # The implementation of the first puzzle.
+  defp star_one_impl(filename) when is_binary(filename) do
+    filename
+    |> File.stream!()
+    |> chunk_by_blank_lines()
+    |> filter_blank_lines()
+    |> map_to_totals()
+    |> Enum.to_list()
+    |> IO.inspect()
+
     {:ok, filename}
+  end
+
+  # Chunks stream by blank lines
+  defp chunk_by_blank_lines(stream = %File.Stream{}) do
+    stream
+    |> Stream.chunk_by(fn text ->
+      String.trim(text) == ""
+    end)
+  end
+
+  # Filters out blank lines from stream
+  defp filter_blank_lines(stream = %Stream{}) do
+    stream
+    |> Stream.filter(fn list ->
+      list != ["\n"]
+    end)
+  end
+
+  # Maps stream values to totals
+  defp map_to_totals(stream = %Stream{}) do
+    stream
+    |> Stream.map(&list_to_total/1)
+  end
+
+  # Converts list of strings to total
+  defp list_to_total(list = [_ | _]) do
+    list
+    |> Stream.map(&String.trim/1)
+    |> Stream.map(&Integer.parse/1)
+    |> Stream.map(fn {int, _} -> int end)
+    |> Enum.sum()
   end
 end

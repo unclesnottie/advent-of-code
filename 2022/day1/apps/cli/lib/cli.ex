@@ -5,7 +5,17 @@ defmodule Cli do
 
   @doc false
   def main(args) do
-    args
-    |> IO.puts()
+    filename =
+      args
+      |> hd()
+
+    case CalorieCounter.process(filename) do
+      {:ok, output} ->
+        IO.puts(output)
+
+      {:error, msg} ->
+        IO.puts(msg)
+        System.stop(1)
+    end
   end
 end

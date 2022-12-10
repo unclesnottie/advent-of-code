@@ -4,15 +4,9 @@ defmodule Rucksack do
   """
 
   @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Rucksack.hello()
-      :world
-
+  The main entry point into Rucksack
   """
-  def hello do
-    :world
+  def process(filename) when is_binary(filename) do
+    {:ok, filename}
   end
 end

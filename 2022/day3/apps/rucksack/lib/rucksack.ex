@@ -62,7 +62,7 @@ defmodule Rucksack do
   The main entry point into Rucksack
   """
   def process(filename) when is_binary(filename) do
-    part_one_impl(filename)
+    part_two_impl(filename)
   end
 
   # Implmentation of part one
@@ -72,6 +72,19 @@ defmodule Rucksack do
       |> Stream.map(&String.trim/1)
       |> split_into_compartments()
       |> get_intersection()
+      |> get_score()
+      |> Enum.sum()
+
+    {:ok, total}
+  end
+
+  # Implementation of part two
+  defp part_two_impl(filename) when is_binary(filename) do
+    total =
+      File.stream!(filename)
+      |> Stream.map(&String.trim/1)
+      |> Stream.chunk_every(3)
+      |> find_badge()
       |> get_score()
       |> Enum.sum()
 
@@ -97,6 +110,22 @@ defmodule Rucksack do
       set2 = comp2 |> string_to_mapset()
 
       MapSet.intersection(set1, set2)
+      |> MapSet.to_list()
+      |> hd()
+    end)
+  end
+
+  # Find badge
+  defp find_badge(stream = %Stream{}) do
+    stream
+    |> Stream.map(fn [str1 | [str2 | [str3 | _]]] ->
+      set1 = str1 |> string_to_mapset()
+      set2 = str2 |> string_to_mapset()
+      set3 = str3 |> string_to_mapset()
+
+      set1
+      |> MapSet.intersection(set2)
+      |> MapSet.intersection(set3)
       |> MapSet.to_list()
       |> hd()
     end)

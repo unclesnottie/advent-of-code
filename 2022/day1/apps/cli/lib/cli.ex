@@ -3,16 +3,9 @@ defmodule Cli do
   Documentation for `Cli`.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Cli.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  @doc false
+  def main(args) do
+    args
+    |> IO.puts()
   end
 end

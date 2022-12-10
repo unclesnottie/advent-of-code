@@ -10,6 +10,8 @@ defmodule Cli.MixProject do
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
       elixir: "~> 1.14",
+      escript: [main_module: Cli],
+      build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]

@@ -3,16 +3,8 @@ defmodule CalorieCounter do
   Documentation for `CalorieCounter`.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> CalorieCounter.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  @doc false
+  def process(filename) when is_binary(filename) do
+    {:ok, filename}
   end
 end

@@ -12,15 +12,15 @@ defmodule CalorieCounter do
 
   # The implementation of the first puzzle.
   defp star_one_impl(filename) when is_binary(filename) do
-    filename
-    |> File.stream!()
-    |> chunk_by_blank_lines()
-    |> filter_blank_lines()
-    |> map_to_totals()
-    |> Enum.to_list()
-    |> IO.inspect()
+    total =
+      filename
+      |> File.stream!()
+      |> chunk_by_blank_lines()
+      |> filter_blank_lines()
+      |> map_to_totals()
+      |> Enum.max()
 
-    {:ok, filename}
+    {:ok, total}
   end
 
   # Chunks stream by blank lines

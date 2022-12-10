@@ -31,6 +31,11 @@ defmodule Roshambo do
   The main entry point into Roshambo
   """
   def process(filename) when is_binary(filename) do
+    part_one_impl(filename)
+  end
+
+  # Solution for part one
+  def part_one_impl(filename) when is_binary(filename) do
     total =
       File.stream!(filename)
       |> Stream.map(&input_to_round_score/1)

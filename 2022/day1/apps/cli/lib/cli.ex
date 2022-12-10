@@ -3,7 +3,9 @@ defmodule Cli do
   Documentation for `Cli`.
   """
 
-  @doc false
+  @doc """
+  The main function for the command line interface.
+  """
   def main(args) do
     with {:ok, filename} <- parse_args(args),
          :ok <- file_exists?(filename),
@@ -17,7 +19,7 @@ defmodule Cli do
     end
   end
 
-  @doc false
+  # Parses command line arguments to get the input file name.
   defp parse_args(args) do
     case args do
       [] ->
@@ -28,7 +30,7 @@ defmodule Cli do
     end
   end
 
-  @doc false
+  # Verifies the input file exists.
   defp file_exists?(filename) do
     case File.exists?(filename) do
       true -> :ok

@@ -1,4 +1,4 @@
 # Day1
 
-**TODO: Add description**
+This project implements a solution to the 2022 Advent of Code Day 1 challenge.
 

@@ -3,7 +3,9 @@ defmodule CalorieCounter do
   Documentation for `CalorieCounter`.
   """
 
-  @doc false
+  @doc """
+  The main entry point into CalorieCounter.
+  """
   def process(filename) when is_binary(filename) do
     {:ok, filename}
   end

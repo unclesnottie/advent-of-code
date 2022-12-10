@@ -7,7 +7,7 @@ defmodule CalorieCounter do
   The main entry point into CalorieCounter.
   """
   def process(filename) when is_binary(filename) do
-    star_one_impl(filename)
+    star_two_impl(filename)
   end
 
   # The implementation of the first puzzle.
@@ -19,6 +19,21 @@ defmodule CalorieCounter do
       |> filter_blank_lines()
       |> map_to_totals()
       |> Enum.max()
+
+    {:ok, total}
+  end
+
+  # The implementation of the second  puzzle.
+  defp star_two_impl(filename) when is_binary(filename) do
+    total =
+      filename
+      |> File.stream!()
+      |> chunk_by_blank_lines()
+      |> filter_blank_lines()
+      |> map_to_totals()
+      |> Enum.sort(&(&1 >= &2))
+      |> Enum.take(3)
+      |> Enum.sum()
 
     {:ok, total}
   end

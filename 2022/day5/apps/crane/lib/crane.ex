@@ -7,7 +7,7 @@ defmodule Crane do
   This is the initial entry point to Crane
   """
   def process(filename) when is_binary(filename) do
-    part_one_impl(filename)
+    part_two_impl(filename)
   end
 
   # Implements the solution to part one
@@ -25,6 +25,29 @@ defmodule Crane do
       |> List.flatten()
 
     final_state = initial_state |> execute_moves(move_list)
+
+    output =
+      final_state
+      |> calc_output()
+
+    {:ok, output}
+  end
+
+  # Implements the solution for part two
+  defp part_two_impl(filename) when is_binary(filename) do
+    [state, _, moves | _] =
+      filename
+      |> File.stream!()
+      |> split_state_moves()
+
+    initial_state = state |> build_initial_state()
+
+    move_list =
+      moves
+      |> Enum.map(&move_string_to_list/1)
+      |> List.flatten()
+
+    final_state = initial_state |> execute_moves2(move_list)
 
     output =
       final_state
@@ -99,6 +122,22 @@ defmodule Crane do
       from_list = acc |> Map.get(from)
       from_length = from_list |> Enum.count()
       movers = from_list |> Enum.take(count) |> Enum.reverse()
+      from_tail = from_list |> Enum.take(count - from_length)
+      to_list = acc |> Map.get(to)
+
+      acc
+      |> Map.put(from, from_tail)
+      |> Map.put(to, [movers | to_list] |> List.flatten())
+    end)
+  end
+
+  # Execute moves against state
+  defp execute_moves2(state = %{}, moves = [_ | _]) do
+    moves
+    |> Enum.reduce(state, fn {count, from, to}, acc ->
+      from_list = acc |> Map.get(from)
+      from_length = from_list |> Enum.count()
+      movers = from_list |> Enum.take(count)
       from_tail = from_list |> Enum.take(count - from_length)
       to_list = acc |> Map.get(to)
 

@@ -7,11 +7,21 @@ defmodule Signal do
   Entry funtion into Singal
   """
   def process(filename) when is_binary(filename) do
-    part_one_impl(filename)
+    part_two_impl(filename)
   end
 
   # Implements solution to part one
   defp part_one_impl(filename) when is_binary(filename) do
+    calculate(filename, 4)
+  end
+
+  # Implements solution to part two
+  defp part_two_impl(filename) when is_binary(filename) do
+    calculate(filename, 14)
+  end
+
+  # Performs the calculation with the number of marker digits passed in
+  defp calculate(filename, digits) when is_binary(filename) and is_integer(digits) do
     input =
       filename
       |> File.stream!()
@@ -23,16 +33,16 @@ defmodule Signal do
       |> String.graphemes()
 
     {output, _} =
-      4..String.length(input)
+      digits..String.length(input)
       |> Enum.map(fn x ->
         count =
           input_list
           |> Enum.take(x)
-          |> Enum.take(-4)
+          |> Enum.take(-1 * digits)
           |> Enum.uniq()
           |> Enum.count()
 
-        {x, count == 4}
+        {x, count == digits}
       end)
       |> Enum.find(fn {i, bool} ->
         if bool, do: i

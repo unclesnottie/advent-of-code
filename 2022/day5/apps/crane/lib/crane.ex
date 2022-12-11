@@ -19,9 +19,18 @@ defmodule Crane do
 
     initial_state = state |> build_initial_state()
 
-    IO.inspect(initial_state, label: "state")
-    IO.inspect(moves, label: "moves")
-    {:ok, filename}
+    move_list =
+      moves
+      |> Enum.map(&move_string_to_list/1)
+      |> List.flatten()
+
+    final_state = initial_state |> execute_moves(move_list)
+
+    output =
+      final_state
+      |> calc_output()
+
+    {:ok, output}
   end
 
   # Splits the initial state from the moves
@@ -71,5 +80,38 @@ defmodule Crane do
     |> Stream.map(&String.trim_trailing(&1, "]"))
     |> Enum.with_index(fn e, i -> {"#{i + 1}", e} end)
     |> Enum.filter(fn {_, value} -> value != "" end)
+  end
+
+  # Convert move string to list of moves
+  defp move_string_to_list(str) when is_binary(str) do
+    [_, count, _, from, _, to | _] =
+      str
+      |> String.split()
+
+    {i, _} = count |> Integer.parse()
+    {from, to} |> List.duplicate(i)
+  end
+
+  # Execute moves against state
+  defp execute_moves(state = %{}, moves = [_ | _]) do
+    moves
+    |> Enum.reduce(state, fn {from, to}, acc ->
+      [from_head | from_tail] = acc |> Map.get(from)
+      to_list = acc |> Map.get(to)
+
+      acc
+      |> Map.put(from, from_tail)
+      |> Map.put(to, [from_head | to_list])
+    end)
+  end
+
+  # Calculates output from state
+  defp calc_output(state = %{}) do
+    state
+    |> Map.to_list()
+    |> Enum.map(fn {_, list} ->
+      list |> hd()
+    end)
+    |> Enum.join()
   end
 end

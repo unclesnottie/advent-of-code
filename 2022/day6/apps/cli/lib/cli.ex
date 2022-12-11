@@ -7,8 +7,9 @@ defmodule CLI do
   The main function for the command line interface
   """
   def main(args) do
-    with {:ok, input} <- parse_args(args),
-         {:ok, output} <- Signal.process(input) do
+    with {:ok, filename} <- parse_args(args),
+         :ok <- file_exists?(filename),
+         {:ok, output} <- Signal.process(filename) do
       IO.puts(output)
     else
       {:error, msg} ->
@@ -18,6 +19,14 @@ defmodule CLI do
   end
 
   # Parses the command line arugments
-  defp parse_args([]), do: {:error, "Please provide an input string"}
-  defp parse_args([input | _]), do: {:ok, input}
+  defp parse_args([]), do: {:error, "Please provide a file name"}
+  defp parse_args([filename | _]), do: {:ok, filename}
+
+  # Check if the file exists
+  defp file_exists?(filename) when is_binary(filename) do
+    case File.exists?(filename) do
+      true -> :ok
+      false -> {:error, "File #{filename} does not exist"}
+    end
+  end
 end

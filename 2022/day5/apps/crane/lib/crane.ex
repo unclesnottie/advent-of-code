@@ -89,19 +89,22 @@ defmodule Crane do
       |> String.split()
 
     {i, _} = count |> Integer.parse()
-    {from, to} |> List.duplicate(i)
+    {i, from, to}
   end
 
   # Execute moves against state
   defp execute_moves(state = %{}, moves = [_ | _]) do
     moves
-    |> Enum.reduce(state, fn {from, to}, acc ->
-      [from_head | from_tail] = acc |> Map.get(from)
+    |> Enum.reduce(state, fn {count, from, to}, acc ->
+      from_list = acc |> Map.get(from)
+      from_length = from_list |> Enum.count()
+      movers = from_list |> Enum.take(count) |> Enum.reverse()
+      from_tail = from_list |> Enum.take(count - from_length)
       to_list = acc |> Map.get(to)
 
       acc
       |> Map.put(from, from_tail)
-      |> Map.put(to, [from_head | to_list])
+      |> Map.put(to, [movers | to_list] |> List.flatten())
     end)
   end
 

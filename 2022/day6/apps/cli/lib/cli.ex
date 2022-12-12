@@ -26,7 +26,7 @@ defmodule CLI do
   defp file_exists?(filename) when is_binary(filename) do
     case File.exists?(filename) do
       true -> :ok
-      false -> {:error, "File #{filename} does not exist"}
+      false -> {:error, ["File ", filename, " does not exist"]}
     end
   end
 end

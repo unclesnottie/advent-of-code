@@ -8,7 +8,7 @@ defmodule Saver.Dir do
   @type t :: %__MODULE__{
           name: binary,
           dirs: %{binary => Saver.Dir.t()},
-          files: %{binary => Saver.File.t()}
+          files: Saver.FileMap.t()
         }
 
   @doc """
@@ -22,7 +22,7 @@ defmodule Saver.Dir do
     %__MODULE__{
       name: name,
       dirs: %{},
-      files: %{}
+      files: Saver.FileMap.new()
     }
   end
 end

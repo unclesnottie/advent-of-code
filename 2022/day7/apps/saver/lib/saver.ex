@@ -54,7 +54,7 @@ defmodule Saver do
   end
 
   # Processes moving into top directory
-  defp process_command({:cd, dir}, {dir_map = %{}, path = []}) do
+  defp process_command({:cd, dir}, {dir_map = %{}, []}) do
     new_path = [dir]
     new_dir_map = dir_map |> Map.put(new_path, Saver.Dir.new(dir))
     {new_dir_map, new_path}
@@ -89,9 +89,7 @@ defmodule Saver do
 
   defp process_command({:file, name, size}, {dir_map = %{}, path = [_ | _]}) do
     curr_dir = dir_map |> Map.get(path)
-    new_files = curr_dir.files |> Map.put(name, Saver.File.new(name, size))
-    new_curr_dir = curr_dir |> Map.put(:files, new_files)
-    new_dir_map = dir_map |> Map.put(path, new_curr_dir)
-    {new_dir_map, path}
+    curr_dir.files |> Saver.FileMap.put(name, size)
+    {dir_map, path}
   end
 end

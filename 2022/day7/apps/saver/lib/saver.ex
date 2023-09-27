@@ -15,7 +15,7 @@ defmodule Saver do
     filename
     |> read_commands()
     |> IO.inspect(label: "Processed commands")
-    |> Enum.reduce({%{}, nil}, &process_command/2)
+    |> Enum.reduce({%{}, []}, &process_command/2)
     |> IO.inspect(label: "Dir tree")
 
     # Temp success return value
@@ -43,52 +43,55 @@ defmodule Saver do
     {:file, name, int}
   end
 
-  # Processes a single command
-  defp process_command({:cd, :up}, {dir_map, curr_dir = %{parent: nil}}) do
-    {dir_map, curr_dir}
+  # Processes moving up when at top directory
+  defp process_command({:cd, :up}, {dir_map = %{}, path = [_]}) do
+    {dir_map, path}
   end
 
-  defp process_command({:cd, :up}, {dir_map, %{parent: name}}) do
-    {dir_map, Map.get(dir_map, name)}
+  # Processes moving up when not at top directory
+  defp process_command({:cd, :up}, {dir_map = %{}, [_parent | path]}) do
+    {dir_map, path}
   end
 
-  defp process_command({:cd, dir}, {dir_map, _}) when dir_map == %{} do
-    new_dir = Saver.Dir.new(dir)
-    new_dir_map = %{} |> Map.put_new(dir, new_dir)
-    {new_dir_map, new_dir}
+  # Processes moving into top directory
+  defp process_command({:cd, dir}, {dir_map = %{}, path = []}) do
+    new_path = [dir]
+    new_dir_map = dir_map |> Map.put(new_path, Saver.Dir.new(dir))
+    {new_dir_map, new_path}
   end
 
-  defp process_command({:cd, dir}, {dir_map, curr_dir}) do
-    case Map.get(dir_map, dir) do
+  # Processes moving into a directory
+  defp process_command({:cd, dir}, {dir_map = %{}, path = [_ | _]}) do
+    new_path = [dir | path]
+
+    case Map.get(dir_map, new_path) do
       nil ->
-        new_dir = Saver.Dir.new(dir, curr_dir.name)
-        parent_dir = curr_dir |> Map.put(:dirs, [dir | curr_dir.dirs])
-        new_dir_map = dir_map |> Map.put_new(dir, new_dir) |> Map.put(curr_dir.name, parent_dir)
-        {new_dir_map, new_dir}
+        new_dir_map = dir_map |> Map.put(new_path, Saver.Dir.new(dir))
+        {new_dir_map, new_path}
 
-      found_dir ->
-        {dir_map, found_dir}
+      _found_dir ->
+        {dir_map, new_path}
     end
   end
 
-  defp process_command({:dir, dir}, {dir_map, curr_dir}) do
-    case Map.get(dir_map, dir) do
-      nil ->
-        new_dir = Saver.Dir.new(dir, curr_dir.name)
-        parent_dir = curr_dir |> Map.put(:dirs, [dir | curr_dir.dirs])
-        new_dir_map = dir_map |> Map.put_new(dir, new_dir) |> Map.put(curr_dir.name, parent_dir)
-        {new_dir_map, parent_dir}
+  defp process_command({:dir, dir}, {dir_map = %{}, path = [_ | _]}) do
+    dir_path = [dir | path]
 
-      found_dir ->
-        parent_dir = curr_dir |> Map.put(:dirs, [dir | curr_dir.dirs])
-        new_dir_map = dir_map |> Map.put(curr_dir.name, parent_dir)
-        {new_dir_map, parent_dir}
+    case Map.get(dir_map, dir_path) do
+      nil ->
+        new_dir_map = dir_map |> Map.put(dir_path, Saver.Dir.new(dir))
+        {new_dir_map, path}
+
+      _found_dir ->
+        {dir_map, path}
     end
   end
 
-  defp process_command({:file, name, size}, {dir_map, curr_dir}) do
-    new_curr_dir = curr_dir |> Map.put(:files, [Saver.File.new(name, size) | curr_dir.files])
-    new_dir_map = dir_map |> Map.put(curr_dir.name, new_curr_dir)
-    {new_dir_map, new_curr_dir}
+  defp process_command({:file, name, size}, {dir_map = %{}, path = [_ | _]}) do
+    curr_dir = dir_map |> Map.get(path)
+    new_files = curr_dir.files |> Map.put(name, Saver.File.new(name, size))
+    new_curr_dir = curr_dir |> Map.put(:files, new_files)
+    new_dir_map = dir_map |> Map.put(path, new_curr_dir)
+    {new_dir_map, path}
   end
 end

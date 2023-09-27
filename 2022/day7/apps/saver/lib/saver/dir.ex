@@ -7,22 +7,22 @@ defmodule Saver.Dir do
 
   @type t :: %__MODULE__{
           name: binary,
-          parent: binary | nil,
-          dirs: list(binary),
-          files: list(Saver.File.t())
+          dirs: %{binary => Saver.Dir.t()},
+          files: %{binary => Saver.File.t()}
         }
 
   @doc """
   Create new directory
   """
+  @spec new() :: t()
+  def new(), do: new("")
+
   @spec new(binary) :: t()
-  @spec new(binary, binary) :: t()
-  def new(name, parent \\ nil) when is_binary(name) and (is_binary(parent) or is_nil(parent)) do
+  def new(name) when is_binary(name) do
     %__MODULE__{
       name: name,
-      parent: parent,
-      dirs: [],
-      files: []
+      dirs: %{},
+      files: %{}
     }
   end
 end

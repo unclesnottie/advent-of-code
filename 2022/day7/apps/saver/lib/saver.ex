@@ -12,14 +12,22 @@ defmodule Saver do
 
   # Implements solution to part one
   defp part_one_impl(filename) when is_binary(filename) do
-    filename
-    |> read_commands()
-    |> IO.inspect(label: "Processed commands")
-    |> Enum.reduce({%{}, []}, &process_command/2)
-    |> IO.inspect(label: "Dir tree")
+    {dir_map, _curr_dir} =
+      filename
+      |> read_commands()
+      |> IO.inspect(label: "Processed commands")
+      |> Enum.reduce({%{}, []}, &process_command/2)
+      |> IO.inspect(label: "Dir tree")
+
+    total_size =
+      dir_map
+      |> Map.values()
+      |> Enum.map(fn dir -> dir |> Saver.Dir.get_file_size() end)
+      |> Enum.filter(fn s -> s <= 100_000 end)
+      |> Enum.sum()
 
     # Temp success return value
-    {:ok, "Success"}
+    {:ok, "Total Size = #{total_size}"}
   end
 
   # Reads list of commands

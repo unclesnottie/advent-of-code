@@ -7,7 +7,7 @@ defmodule Saver do
   Entry function into Saver
   """
   def process(filename) when is_binary(filename) do
-    part_one_impl(filename)
+    part_two_impl(filename)
   end
 
   # Implements solution to part one
@@ -28,6 +28,43 @@ defmodule Saver do
 
     # Temp success return value
     {:ok, "Total Size = #{total_size}"}
+  end
+
+  # Implements solution to part two
+  defp part_two_impl(filename) when is_binary(filename) do
+    {dir_map, _curr_dir} =
+      filename
+      |> read_commands()
+      |> IO.inspect(label: "Processed commands")
+      |> Enum.reduce({%{}, []}, &process_command/2)
+      |> IO.inspect(label: "Dir tree")
+
+    filesystem_size = 70_000_000
+
+    top_dir_size =
+      dir_map
+      |> Map.get(["/"])
+      |> Saver.Dir.get_file_size()
+      |> IO.inspect(label: "Top Dir Size")
+
+    unused_size =
+      (filesystem_size - top_dir_size)
+      |> IO.inspect(label: "Unused Space")
+
+    size_to_delete =
+      (30_000_000 - unused_size)
+      |> IO.inspect(label: "Size to delete")
+
+    {dir_to_delete, dir_size} =
+      dir_map
+      |> Map.values()
+      |> Enum.map(fn dir -> {dir.name, dir |> Saver.Dir.get_file_size()} end)
+      |> IO.inspect(label: "Dir Sizes")
+      |> Enum.filter(fn {_, s} -> s >= size_to_delete end)
+      |> Enum.min_by(fn {_, s} -> s end)
+
+    # Temp success return value
+    {:ok, "Dir To Delete = #{dir_to_delete} #{dir_size}"}
   end
 
   # Reads list of commands

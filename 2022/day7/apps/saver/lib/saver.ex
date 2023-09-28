@@ -66,7 +66,13 @@ defmodule Saver do
 
     case Map.get(dir_map, new_path) do
       nil ->
-        new_dir_map = dir_map |> Map.put(new_path, Saver.Dir.new(dir))
+        new_dir = Saver.Dir.new(dir)
+
+        dir_map
+        |> Map.get(path)
+        |> Saver.Dir.put_dir(new_dir)
+
+        new_dir_map = dir_map |> Map.put(new_path, new_dir)
         {new_dir_map, new_path}
 
       _found_dir ->
@@ -79,7 +85,13 @@ defmodule Saver do
 
     case Map.get(dir_map, dir_path) do
       nil ->
-        new_dir_map = dir_map |> Map.put(dir_path, Saver.Dir.new(dir))
+        new_dir = Saver.Dir.new(dir)
+
+        dir_map
+        |> Map.get(path)
+        |> Saver.Dir.put_dir(new_dir)
+
+        new_dir_map = dir_map |> Map.put(dir_path, new_dir)
         {new_dir_map, path}
 
       _found_dir ->

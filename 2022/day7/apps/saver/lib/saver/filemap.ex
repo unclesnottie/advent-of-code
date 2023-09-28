@@ -14,19 +14,19 @@ defmodule Saver.FileMap do
     pid
   end
 
-  @doc """
-  Gets a value from the `filemap` by `filename`.
-  """
-  @spec get(t(), binary) :: non_neg_integer() | nil
-  def get(filemap, filename) do
-    Agent.get(filemap, &Map.get(&1, filename))
-  end
+  #  @doc """
+  #  Gets a value from the `filemap` by `filename`.
+  #  """
+  #  @spec get(t(), binary) :: non_neg_integer() | nil
+  #  def get(filemap, filename) do
+  #    Agent.get(filemap, &Map.get(&1, filename))
+  #  end
 
   @doc """
-  Get total size of all files.
+  Get size of all files.
   """
-  @spec get_total_size(t()) :: non_neg_integer()
-  def get_total_size(filemap) do
+  @spec get_file_size(t()) :: non_neg_integer()
+  def get_file_size(filemap) do
     Agent.get(filemap, &(Map.values(&1) |> Enum.sum()))
   end
 
@@ -39,6 +39,7 @@ defmodule Saver.FileMap do
   end
 
   # ===== Agent Callbacks =====================================================
+
   @doc """
   Starts a new FileMap.
   """
